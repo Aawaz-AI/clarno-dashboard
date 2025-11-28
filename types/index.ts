@@ -97,12 +97,17 @@ export interface StageDetail {
   avg_turns_per_user: number;
   user_participation_rate: number;
   stage_turn_percentage: number;
+  total_input_tokens?: number;
+  total_output_tokens?: number;
+  total_internal_cost?: number;
+  total_charged_credits?: number;
 }
 
 export interface UserOverallMetrics {
   total_turns: number;
   internal_cost: number;
   user_cost: number;
+  charged_credits?: number;
   total_input_tokens: number;
   total_output_tokens: number;
   total_tokens: number;
@@ -112,6 +117,7 @@ export interface UserStageMetrics {
   turns: number;
   internal_cost: number;
   user_cost: number;
+  charged_credits?: number;
   input_tokens: number;
   output_tokens: number;
   total_tokens: number;
@@ -134,8 +140,10 @@ export interface UserStageAnalytics {
     average_tokens_per_user: number;
     total_internal_cost: number;
     total_user_cost: number;
+    total_charged_credits?: number;
     average_internal_cost_per_user: number;
     average_user_cost_per_user: number;
+    average_charged_credits_per_user?: number;
     most_active_stage: { stage: string; turns: number };
     least_active_stage: { stage: string; turns: number };
   };

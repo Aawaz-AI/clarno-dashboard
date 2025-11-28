@@ -47,6 +47,8 @@ export function useUserAnalytics(dateRange: [string, string] | null, selectedUse
     row.overall_total_turns = counts?.overall?.total_turns ?? 0;
     row.overall_internal_cost = counts?.overall?.internal_cost ?? 0;
     row.overall_user_cost = counts?.overall?.user_cost ?? 0;
+    // map charged credits from API overall
+    row.overall_charged_credits = counts?.overall?.charged_credits ?? 0;
     row.overall_total_input_tokens = counts?.overall?.total_input_tokens ?? 0;
     row.overall_total_output_tokens = counts?.overall?.total_output_tokens ?? 0;
     row.overall_total_tokens = counts?.overall?.total_tokens ?? 0;
@@ -57,6 +59,7 @@ export function useUserAnalytics(dateRange: [string, string] | null, selectedUse
       row[`${stageName}_turns`] = stageData?.turns ?? 0;
       row[`${stageName}_internal_cost`] = stageData?.internal_cost ?? 0;
       row[`${stageName}_user_cost`] = stageData?.user_cost ?? 0;
+        row[`${stageName}_charged_credits`] = stageData?.charged_credits ?? 0;
       row[`${stageName}_input_tokens`] = stageData?.input_tokens ?? 0;
       row[`${stageName}_output_tokens`] = stageData?.output_tokens ?? 0;
       row[`${stageName}_total_tokens`] = stageData?.total_tokens ?? 0;
@@ -71,6 +74,7 @@ export function useUserAnalytics(dateRange: [string, string] | null, selectedUse
     total_turns: (counts as any)?.overall?.total_turns ?? 0,
     internal_cost: (counts as any)?.overall?.internal_cost ?? 0,
     user_cost: (counts as any)?.overall?.user_cost ?? 0,
+    charged_credits: (counts as any)?.overall?.charged_credits ?? 0,
     total_input_tokens: (counts as any)?.overall?.total_input_tokens ?? 0,
     total_output_tokens: (counts as any)?.overall?.total_output_tokens ?? 0,
   }));
