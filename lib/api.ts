@@ -3,7 +3,7 @@ export interface AnalyticsParams {
   end_date: string;
 }
 
-import type { UserStageAnalytics } from '@/types';
+import type { UserStageAnalytics, UserStageAnalyticsResponse } from '@/types';
 
 export interface AnalyticsResponse {
   success: boolean;
@@ -65,36 +65,7 @@ export interface UserAnalyticsParams {
   end_date: string;
 }
 
-export interface UserAnalyticsResponse {
-  success: boolean;
-  message: string;
-  data: {
-    stage_analytics: {
-      date_range: {
-        start_date: string;
-        end_date: string;
-        total_days: number;
-      };
-      overall_analytics: {
-        total_users_analyzed: number;
-        total_turns: number;
-        average_turns_per_user: number;
-        most_active_stage: { stage: string; turns: number };
-        least_active_stage: { stage: string; turns: number };
-      };
-      stage_analytics: Record<string, {
-        total_turns: number;
-        users_count: number;
-        avg_turns_per_user: number;
-        user_participation_rate: number;
-        stage_turn_percentage: number;
-      }>;
-      user_data: Record<string, Record<string, number>>;
-    };
-  };
-}
-
-export async function fetchUserAnalytics(params: UserAnalyticsParams): Promise<UserAnalyticsResponse> {
+export async function fetchUserAnalytics(params: UserAnalyticsParams): Promise<UserStageAnalyticsResponse> {
   const url = new URL('/api/analytics/user_analytics', window.location.origin);
   url.searchParams.append('start_date', params.start_date);
   url.searchParams.append('end_date', params.end_date);
