@@ -50,7 +50,7 @@ export default function Header({ userIds, selectedUser, onUserChange, onDateChan
               size="large"
               showSearch
               filterOption={(input, option) =>
-                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                String(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
               }
             >
               <Option value="all">All Users</Option>
