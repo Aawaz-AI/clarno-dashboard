@@ -23,8 +23,6 @@ export async function GET(request: NextRequest) {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        // Add any authorization headers if needed
-        // 'Authorization': `Bearer ${process.env.API_TOKEN}`,
       },
     });
 

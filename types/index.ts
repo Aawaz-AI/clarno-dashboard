@@ -35,6 +35,42 @@ export interface ApiResponse<T> {
   data: T;
 }
 
+// External APIs analytics types
+export interface ExternalApiDailyDatum {
+  reddit_total: number;
+  tavily_total: number;
+  gemini_total: number;
+  daily_total: number;
+  message?: string;
+}
+
+export interface ExternalApisData {
+  start_date: string;
+  end_date: string;
+  date_range_days: number;
+  daily_data: Record<string, ExternalApiDailyDatum>;
+  total_reddit_calls: number;
+  total_tavily_calls: number;
+  total_gemini_calls: number;
+  total_all_calls: number;
+  peak_day: string | null;
+  peak_day_calls: number;
+  tavily_api_usage?: {
+    status: string;
+    data?: {
+      total_credits: number;
+      used_credits: number;
+    };
+    timestamp?: string;
+  };
+}
+
+export interface ExternalApisResponse {
+  success: boolean;
+  message: string;
+  data: ExternalApisData;
+}
+
 export interface DateRange {
   start_date: string;
   end_date: string;

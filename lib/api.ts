@@ -4,6 +4,8 @@ export interface AnalyticsParams {
 }
 
 import type { UserStageAnalytics, UserStageAnalyticsResponse } from '@/types';
+import { API_BASE_URL, API_ENDPOINTS, DEFAULT_HEADERS } from '@/constants/api';
+import type { ExternalApisResponse } from '@/types';
 
 export interface AnalyticsResponse {
   success: boolean;
@@ -79,6 +81,26 @@ export async function fetchUserAnalytics(params: UserAnalyticsParams): Promise<U
 
   if (!response.ok) {
     throw new Error(`API Error: ${response.status} ${response.statusText}`);
+  }
+
+  return response.json();
+}
+
+export async function fetchExternalApisAnalytics(params: AnalyticsParams): Promise<ExternalApisResponse> {
+  // Use Next.js proxy route instead of direct backend call (server-side call bypasses CORS)
+  const url = new URL('/api/analytics/external_apis_analytics', window.location.origin);
+  url.searchParams.append('start_date', params.start_date);
+  url.searchParams.append('end_date', params.end_date);
+
+  const response = await fetch(url.toString(), {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`External APIs analytics error: ${response.status} ${response.statusText}`);
   }
 
   return response.json();

@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
-import { fetchOverallAnalytics, AnalyticsResponse } from '@/lib/api';
-import type { ChartData, Stats } from '@/types';
+import { fetchOverallAnalytics, fetchExternalApisAnalytics } from '@/lib/api';
+import type { AnalyticsResponse } from '@/lib/api';
+import type { ChartData, Stats, ExternalApisResponse } from '@/types';
 import dayjs from 'dayjs';
 
 export function useAnalytics(dateRange: [string, string] | null) {
   const [data, setData] = useState<AnalyticsResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [externalData, setExternalData] = useState<ExternalApisResponse | null>(null);
+  const [externalLoading, setExternalLoading] = useState(false);
+  const [externalError, setExternalError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,6 +28,22 @@ export function useAnalytics(dateRange: [string, string] | null) {
         });
 
         setData(response);
+
+        // Also fetch external-apis analytics (best-effort)
+        setExternalLoading(true);
+        setExternalError(null);
+        try {
+          const ext = await fetchExternalApisAnalytics({ start_date: startDate, end_date: endDate });
+          console.debug('external apis analytics', ext);
+          setExternalData(ext);
+        } catch (err) {
+          const msg = err instanceof Error ? err.message : 'Failed to fetch external apis analytics';
+          console.warn('Failed to fetch external apis analytics', err);
+          setExternalData(null);
+          setExternalError(msg);
+        } finally {
+          setExternalLoading(false);
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch analytics');
         console.error('Analytics fetch error:', err);
@@ -91,5 +111,23 @@ export function useAnalytics(dateRange: [string, string] | null) {
     : [];
 
 
-  return { data, chartData, stats, userRows, userOverallRows, loading, error };
+  // Also expose external API data and helper transforms
+  // Transform external daily_data (object keyed by date) into array for charts
+  const externalDailyArray = externalData?.data?.daily_data
+    ? Object.entries(externalData.data.daily_data)
+        .map(([date, d]) => ({ date, reddit_total: d.reddit_total ?? 0, tavily_total: d.tavily_total ?? 0, gemini_total: d.gemini_total ?? 0, daily_total: d.daily_total ?? 0 }))
+        .sort((a, b) => a.date.localeCompare(b.date))
+    : [];
+
+  const externalTotals = externalData?.data
+    ? {
+        total_reddit_calls: externalData.data.total_reddit_calls ?? 0,
+        total_tavily_calls: externalData.data.total_tavily_calls ?? 0,
+        total_gemini_calls: externalData.data.total_gemini_calls ?? 0,
+        total_all_calls: externalData.data.total_all_calls ?? 0,
+        tavily_usage: externalData.data.tavily_api_usage?.data ?? null,
+      }
+    : null;
+
+  return { data, chartData, stats, userRows, userOverallRows, loading, error, externalData, externalDailyArray, externalTotals, externalLoading, externalError };
 }
