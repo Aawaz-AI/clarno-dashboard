@@ -16,9 +16,13 @@ function CustomTooltip({ active, payload, label }: any) {
   const item = payload.find((p: any) => p && p.dataKey === 'activeUsers') || payload[0];
 
   return (
-    <div className="bg-white p-3 rounded shadow-md" style={{ minWidth: 140 }}>
-      <div className="text-xs text-gray-500">{label}</div>
-      <div className="mt-1 text-sm font-semibold text-blue-600">{item.value} Active Users</div>
+    <div className="bg-white/95 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-gray-100" style={{ minWidth: 160 }}>
+      <div className="text-xs font-medium text-gray-500 mb-1">{label}</div>
+      <div className="flex items-center gap-2">
+        <div className="w-2 h-2 rounded-full bg-blue-500" />
+        <div className="text-lg font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{item.value}</div>
+        <div className="text-xs text-gray-600">users</div>
+      </div>
     </div>
   );
 }
@@ -37,8 +41,11 @@ export default function ActiveUsersChart({ data }: ActiveUsersChartProps) {
   const yMax = Math.max(10, Math.ceil(maxValue / 10) * 10);
 
   return (
-    <Card className="shadow-sm">
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">Active Users Trend</h2>
+    <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 border-0 bg-white/80 backdrop-blur-sm overflow-hidden">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-1 h-8 bg-linear-to-b from-blue-500 to-purple-600 rounded-full" />
+        <h2 className="text-xl font-bold bg-linear-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">Active Users Trend</h2>
+      </div>
       <ResponsiveContainer width="100%" height={340}>
         <LineChart data={displayData} margin={{ top: 10, right: 20, left: 0, bottom: 20 }}>
           <defs>

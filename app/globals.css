@@ -14,3 +14,128 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Custom animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+.animate-shake {
+  animation: shake 0.5s;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s ease-out;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+  border-radius: 10px;
+  transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #2563eb, #7c3aed);
+}
+
+/* Ant Design customizations */
+.ant-card {
+  border-radius: 16px !important;
+}
+
+.ant-table {
+  border-radius: 12px !important;
+}
+
+.ant-select-selector {
+  border-radius: 10px !important;
+}
+
+.ant-picker {
+  border-radius: 10px !important;
+}
+
+/* Custom table styling */
+.custom-table .ant-table-thead > tr > th {
+  background: linear-gradient(to right, #f8fafc, #f1f5f9) !important;
+  font-weight: 600 !important;
+  color: #1e293b !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+}
+
+.custom-table .ant-table-tbody > tr:hover > td {
+  background: rgba(59, 130, 246, 0.05) !important;
+}
+
+.custom-table .ant-pagination-item-active {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6) !important;
+  border-color: #3b82f6 !important;
+}
+
+.custom-table .ant-pagination-item-active a {
+  color: white !important;
+}
+
+/* Smooth transitions for all interactive elements */
+button, a, .ant-btn {
+  transition: all 0.3s ease;
+}

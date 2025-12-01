@@ -85,10 +85,13 @@ export default function UsersTable({ users, selectedUser, onSelectUser }: UsersT
   ];
 
   return (
-    <Card className="shadow-sm">
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">
-        User Information
-      </h2>
+    <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 border-0 bg-white/80 backdrop-blur-sm overflow-hidden">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-1 h-8 bg-linear-to-b from-blue-500 to-purple-600 rounded-full" />
+        <h2 className="text-xl font-bold bg-linear-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+          User Information
+        </h2>
+      </div>
       <Table
         columns={columns}
         dataSource={users}
@@ -98,7 +101,14 @@ export default function UsersTable({ users, selectedUser, onSelectUser }: UsersT
           showSizeChanger: true,
           showTotal: (total) => `Total ${total} users`,
         }}
-        className="overflow-x-auto"
+        className="overflow-x-auto custom-table"
+        rowClassName={(record) => 
+          `hover:bg-blue-50/50 transition-colors duration-200 ${
+            selectedUser && String(selectedUser) === String(record.id) 
+              ? 'bg-blue-50 border-l-4 border-blue-500' 
+              : ''
+          }`
+        }
       />
     </Card>
   );

@@ -298,27 +298,40 @@ export default function UserAnalytics({ stages, userRows, userOverallRows = [], 
   }, [userTableColumns, selectedGroup]);
 
   // Prepare filtered overall rows for the stacked chart (used in conditional rendering)
-  const filteredOverallRows = (selectedUser && userOverallRows && userOverallRows.length)
-    ? userOverallRows.filter(u => String(u.userId) === String(selectedUser))
-    : (userOverallRows || []);
+  const filteredOverallRows = useMemo(() => {
+    if (!userOverallRows || userOverallRows.length === 0) return [];
+    if (!selectedUser || selectedUser === 'all') return userOverallRows;
+    return userOverallRows.filter(u => String(u.userId) === String(selectedUser));
+  }, [userOverallRows, selectedUser]);
 
-  // compute filtered rows based on search
+  // compute filtered rows based on search and selectedUser
   const displayedRows = useMemo(() => {
-    if (!searchText) return userRows;
-    const q = String(searchText).toLowerCase();
-    return (userRows || []).filter((r) => {
-      if (!r) return false;
-      // search userId and overall fields
-      if (String(r.userId).toLowerCase().includes(q)) return true;
-      const keys = Object.keys(r);
-      for (const k of keys) {
-        const v = r[k];
-        if (v === null || v === undefined) continue;
-        if (String(v).toLowerCase().includes(q)) return true;
-      }
-      return false;
-    });
-  }, [userRows, searchText]);
+    let filtered = userRows || [];
+    
+    // Filter by selected user if one is selected
+    if (selectedUser && selectedUser !== 'all') {
+      filtered = filtered.filter((r) => String(r.userId) === String(selectedUser));
+    }
+    
+    // Then filter by search text if provided
+    if (searchText) {
+      const q = String(searchText).toLowerCase();
+      filtered = filtered.filter((r) => {
+        if (!r) return false;
+        // search userId and overall fields
+        if (String(r.userId).toLowerCase().includes(q)) return true;
+        const keys = Object.keys(r);
+        for (const k of keys) {
+          const v = r[k];
+          if (v === null || v === undefined) continue;
+          if (String(v).toLowerCase().includes(q)) return true;
+        }
+        return false;
+      });
+    }
+    
+    return filtered;
+  }, [userRows, searchText, selectedUser]);
 
   return (
     <div className="flex flex-col gap-6">

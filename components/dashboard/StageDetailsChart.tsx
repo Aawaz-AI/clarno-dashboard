@@ -40,7 +40,7 @@ export default function StageDetailsChart({ stages }: Props) {
   return (
     <div style={{ width: '100%', height: 320 }}>
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 40 }}>
+        <LineChart data={data} margin={{ top: 10, right: 20, left: 20, bottom: 40 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" angle={-20} textAnchor="end" height={60} />
           <YAxis />
