@@ -1,9 +1,10 @@
-'use client';
+ 'use client';
 
+import dynamic from 'next/dynamic';
 import Header from './Header';
 import StatsCards from './StatsCards';
 import ActiveUsersChart from './ActiveUsersChart';
-import UsersTable from './UsersTable';
+const UsersTable = dynamic(() => import('./UsersTable'), { ssr: false });
 import UserAnalytics from './UserAnalytics';
 import { mockUsers } from '@/lib/data';
 import { useDashboardFilters } from '@/hooks/useDashboardFilters';
