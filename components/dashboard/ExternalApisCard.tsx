@@ -15,7 +15,7 @@ type Props = {
 
 export default function ExternalApisCard({ totals, dailyArray, loading, error, dateRange }: Props) {
   if (error) {
-    return <Alert className="mb-4" type="warning" message={error} showIcon />;
+    return <Alert className="mb-4" type="warning" title={error} showIcon />;
   }
 
   if (loading) {

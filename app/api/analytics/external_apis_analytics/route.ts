@@ -13,7 +13,14 @@ export async function GET(request: Request) {
       );
     }
 
-    const backendUrl = new URL(`${API_BASE_URL}/analytics/external_apis_analytics`);
+    if (!API_BASE_URL) {
+      console.error('❌ Missing API_BASE_URL environment variable (set NEXT_PUBLIC_API_URL or API_URL)');
+      return Response.json({ error: 'Server misconfiguration: API base URL not set' }, { status: 500 });
+    }
+
+    // Ensure we don't accidentally include duplicate slashes
+    const base = API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
+    const backendUrl = new URL(`${base}/analytics/external_apis_analytics`);
     backendUrl.searchParams.append('start_date', start_date);
     backendUrl.searchParams.append('end_date', end_date);
 
