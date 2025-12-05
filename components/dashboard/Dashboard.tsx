@@ -6,7 +6,6 @@ import StatsCards from './StatsCards';
 import ActiveUsersChart from './ActiveUsersChart';
 const UsersTable = dynamic(() => import('./UsersTable'), { ssr: false });
 import UserAnalytics from './UserAnalytics';
-import { mockUsers } from '@/lib/data';
 import { useDashboardFilters } from '@/hooks/useDashboardFilters';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { useUserAnalytics } from '@/hooks/useUserAnalytics';
@@ -19,15 +18,14 @@ export default function Dashboard() {
     setSelectedUser,
     dateRange,
     setDateRange,
-    filteredUsers,
-  } = useDashboardFilters(mockUsers);
+  } = useDashboardFilters([]);
 
   // Fetch analytics data from API
   const { chartData, stats, loading, error, externalDailyArray, externalTotals, externalLoading, externalError } = useAnalytics(dateRange);
-  const { stageAnalytics, stagesArray, userDataRows, userOverallRows, chartData: userChartData, loading: userLoading, error: userError } = useUserAnalytics(dateRange, selectedUser);
+  const { stageAnalytics, stagesArray, userDataRows, userOverallRows, chartData: userChartData, userProfiles, loading: userLoading, error: userError } = useUserAnalytics(dateRange, selectedUser);
 
   // Extract actual user IDs from API data
-  const userIdList = userDataRows?.map(row => row.userId).filter(Boolean) || [];
+  const userIdList = userProfiles?.map(user => user.user_id).filter(Boolean) || [];
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50/30 to-purple-50/30">
@@ -69,7 +67,9 @@ export default function Dashboard() {
                 <UserAnalytics stages={stagesArray} userRows={userDataRows} userOverallRows={userOverallRows} chartData={userChartData} selectedUser={selectedUser} onSelectUser={setSelectedUser} />
               )}
 
-              <UsersTable users={filteredUsers} selectedUser={selectedUser} onSelectUser={setSelectedUser} />
+              {!userLoading && !userError && userProfiles.length > 0 && (
+                <UsersTable users={userProfiles} selectedUser={selectedUser} onSelectUser={setSelectedUser} />
+              )}
 
               {/* External APIs analytics - shown after Per-user Detailed Metrics */}
               {(externalTotals || externalLoading || externalError) && (

@@ -3,6 +3,7 @@
 import { ConfigProvider } from 'antd';
 import { ReactNode, useEffect, useState } from 'react';
 import GlobalLoader from '@/components/GlobalLoader';
+import { AuthProvider } from '@/components/AuthProvider';
 
 export default function Providers({ children }: { children: ReactNode }) {
   const [mounted, setMounted] = useState(false);
@@ -29,7 +30,7 @@ export default function Providers({ children }: { children: ReactNode }) {
             },
           }}
         >
-          {children}
+          <AuthProvider>{children}</AuthProvider>
         </ConfigProvider>
       </div>
     </>

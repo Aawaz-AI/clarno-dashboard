@@ -8,6 +8,15 @@ export interface User {
   region: string;
 }
 
+export interface UserProfile {
+  user_id: string;
+  name: string;
+  email: string;
+  last_login: string | null;
+  region: string;
+  creation_time: string;
+}
+
 export interface ChartData {
   date: string;
   activeUsers: number;
@@ -192,5 +201,6 @@ export interface UserStageAnalyticsResponse {
   message: string;
   data: {
     stage_analytics: UserStageAnalytics;
+    user_profiles: UserProfile[];
   };
 }
