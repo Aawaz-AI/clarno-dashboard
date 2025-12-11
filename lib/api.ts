@@ -105,3 +105,42 @@ export async function fetchExternalApisAnalytics(params: AnalyticsParams): Promi
 
   return response.json();
 }
+
+export interface AdminLoginResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    token: string;
+    user?: {
+      id?: string;
+      username?: string;
+      email?: string;
+    };
+  };
+  error?: string;
+}
+
+export async function adminLogin(username: string, password: string): Promise<AdminLoginResponse> {
+  if (!API_BASE_URL) {
+    throw new Error('API base URL not configured');
+  }
+
+  const url = new URL(API_BASE_URL);
+  url.pathname = API_ENDPOINTS.ADMIN_LOGIN;
+
+  const response = await fetch(url.toString(), {
+    method: 'POST',
+    headers: DEFAULT_HEADERS,
+    body: JSON.stringify({
+      username,
+      password,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || `Login failed: ${response.status} ${response.statusText}`);
+  }
+
+  return response.json();
+}

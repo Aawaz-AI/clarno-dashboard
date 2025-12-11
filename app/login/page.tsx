@@ -4,22 +4,36 @@ import { useState } from 'react';
 import { Card, Form, Input, Button, Alert } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
+import { adminLogin } from '@/lib/api';
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [form] = Form.useForm();
   const router = useRouter();
 
-  const onFinish = async (values: { email: string; password: string }) => {
+  const onFinish = async (values: { username: string; password: string }) => {
     setLoading(true);
     setError(null);
 
-    // Simulate login - design only, no API call
-    setTimeout(() => {
-      // Mock successful login
-      localStorage.setItem('auth_token', 'demo_token');
-      router.push('/');
-    }, 1000);
+    try {
+      const response = await adminLogin(values.username, values.password);
+      
+      if (response.success && response.data?.token) {
+        localStorage.setItem('auth_token', response.data.token);
+        if (response.data.user) {
+          localStorage.setItem('user_info', JSON.stringify(response.data.user));
+        }
+        router.push('/');
+      } else {
+        setError(response.message || 'Login failed');
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred during login';
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -32,7 +46,8 @@ export default function LoginPage() {
 
         {error && (
           <Alert
-            title={error}
+            message="Login Error"
+            description={error}
             type="error"
             showIcon
             closable
@@ -42,23 +57,24 @@ export default function LoginPage() {
         )}
 
         <Form
+          form={form}
           name="login"
           onFinish={onFinish}
           layout="vertical"
           requiredMark={false}
         >
           <Form.Item
-            name="email"
-            label="Email"
+            name="username"
+            label="Username"
             rules={[
-              { required: true, message: 'Please enter your email' },
-              { type: 'email', message: 'Please enter a valid email' },
+              { required: true, message: 'Please enter your username' },
             ]}
           >
             <Input
               prefix={<UserOutlined className="text-gray-400" />}
-              placeholder="admin@example.com"
+              placeholder="Enter your username"
               size="large"
+              autoFocus
             />
           </Form.Item>
 
