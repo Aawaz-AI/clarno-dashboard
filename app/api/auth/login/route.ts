@@ -1,34 +1,49 @@
 import { NextResponse } from 'next/server';
 
+const API_BASE_URL = process.env.API_URL;
+
 export async function POST(request: Request) {
   try {
-    const { email, password } = await request.json();
+    const { username, password } = await request.json();
 
-    if (!email || !password) {
+    if (!username || !password) {
       return NextResponse.json(
-        { error: 'Email and password are required' },
+        { error: 'Username and password are required' },
         { status: 400 }
       );
     }
 
-    const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@clarno.ai';
-    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
-
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      // Generate a simple token (in production, use JWT or proper session management)
-      const token = Buffer.from(`${email}:${Date.now()}`).toString('base64');
-
-      return NextResponse.json({
-        success: true,
-        token,
-        user: { email },
-      });
+    if (!API_BASE_URL) {
+      return NextResponse.json(
+        { error: 'API configuration error' },
+        { status: 500 }
+      );
     }
 
-    return NextResponse.json(
-      { error: 'Invalid email or password' },
-      { status: 401 }
-    );
+    const apiUrl = new URL(API_BASE_URL);
+    apiUrl.pathname = '/auth/admin_login';
+
+    const response = await fetch(apiUrl.toString(), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { error: data.message || 'Invalid username or password' },
+        { status: response.status }
+      );
+    }
+
+    return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal server error' },

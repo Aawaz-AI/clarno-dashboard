@@ -19,9 +19,10 @@ export default function LoginPage() {
     try {
       const response = await adminLogin(values.username, values.password);
       
-      if (response.success && response.data?.token) {
-        localStorage.setItem('auth_token', response.data.token);
-        if (response.data.user) {
+      if (response.success) {
+        const token = response.data?.token || 'admin_authenticated';
+        localStorage.setItem('auth_token', token);
+        if (response.data?.user) {
           localStorage.setItem('user_info', JSON.stringify(response.data.user));
         }
         router.push('/');

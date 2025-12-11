@@ -121,26 +121,24 @@ export interface AdminLoginResponse {
 }
 
 export async function adminLogin(username: string, password: string): Promise<AdminLoginResponse> {
-  if (!API_BASE_URL) {
-    throw new Error('API base URL not configured');
-  }
-
-  const url = new URL(API_BASE_URL);
-  url.pathname = API_ENDPOINTS.ADMIN_LOGIN;
+  const url = new URL('/api/auth/login', window.location.origin);
 
   const response = await fetch(url.toString(), {
     method: 'POST',
-    headers: DEFAULT_HEADERS,
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({
       username,
       password,
     }),
   });
 
+  const data = await response.json();
+
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || `Login failed: ${response.status} ${response.statusText}`);
+    throw new Error(data.error || data.message || 'Login failed');
   }
 
-  return response.json();
+  return data;
 }
