@@ -3,13 +3,15 @@
 import { useMemo, useState } from 'react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { Card } from 'antd';
+import type { UserProfile } from '@/types';
 
 type Props = {
   userOverallRows?: Array<Record<string, any>>;
   selectedUser?: string;
+  userProfiles?: UserProfile[];
 };
 
-export default function PerUserOverview({ userOverallRows = [], selectedUser }: Props) {
+export default function PerUserOverview({ userOverallRows = [], selectedUser, userProfiles = [] }: Props) {
   const METRIC_OPTIONS = [
     { key: 'total_turns', label: 'Turns', color: '#2563eb' },
     { key: 'internal_cost', label: 'Internal Cost', color: '#06b6d4' },
@@ -24,11 +26,25 @@ export default function PerUserOverview({ userOverallRows = [], selectedUser }: 
     setSelectedMetrics(prev => prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]);
   };
 
+  const nameLookup = useMemo(() => {
+    return userProfiles.reduce<Record<string, string>>((acc, profile) => {
+      acc[String(profile.user_id)] = profile.name || String(profile.user_id);
+      return acc;
+    }, {});
+  }, [userProfiles]);
+
   const filteredOverallRows = useMemo(() => {
     if (!userOverallRows || userOverallRows.length === 0) return [];
     if (!selectedUser || selectedUser === 'all') return userOverallRows;
     return userOverallRows.filter(u => String(u.userId) === String(selectedUser));
   }, [userOverallRows, selectedUser]);
+
+  const displayRows = useMemo(() => {
+    return filteredOverallRows.map(row => ({
+      ...row,
+      displayName: nameLookup[String(row.userId)] || String(row.userId),
+    }));
+  }, [filteredOverallRows, nameLookup]);
 
   return (
     <Card className="shadow-sm" title={<span className="text-lg font-semibold">Per-user Overview (Stacked)</span>}>
@@ -44,7 +60,7 @@ export default function PerUserOverview({ userOverallRows = [], selectedUser }: 
       </div>
 
       <div style={{ width: '100%', height: 300 }}>
-        {(!filteredOverallRows || filteredOverallRows.length === 0) ? (
+        {(!displayRows || displayRows.length === 0) ? (
           <div className="flex flex-col items-center justify-center h-full text-center p-6">
             <div className="flex items-center justify-center mb-4">
               <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center">
@@ -58,9 +74,16 @@ export default function PerUserOverview({ userOverallRows = [], selectedUser }: 
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={filteredOverallRows} margin={{ top: 10, right: 20, left: 0, bottom: 60 }}>
+            <BarChart data={displayRows} margin={{ top: 10, right: 20, left: 0, bottom: 60 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="userId" tick={{ fontSize: 12 }} angle={filteredOverallRows.length > 1 ? -20 : 0} textAnchor={filteredOverallRows.length > 1 ? 'end' : 'middle'} interval={0} height={60} />
+              <XAxis
+                dataKey="displayName"
+                tick={{ fontSize: 12 }}
+                angle={displayRows.length > 1 ? -20 : 0}
+                textAnchor={displayRows.length > 1 ? 'end' : 'middle'}
+                interval={0}
+                height={60}
+              />
               <YAxis />
               <Tooltip />
               {METRIC_OPTIONS.filter(m => selectedMetrics.includes(m.key)).map(m => (

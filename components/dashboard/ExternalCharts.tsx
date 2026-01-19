@@ -13,6 +13,7 @@ import {
   Bar,
   Legend,
 } from 'recharts';
+import { useThemeMode } from '@/app/provider';
 
 type Props = {
   data: any[];
@@ -20,6 +21,9 @@ type Props = {
 };
 
 export default function ExternalCharts({ data, dateRange }: Props) {
+  const { theme } = useThemeMode();
+  const axisColor = theme === 'dark' ? '#cbd5e1' : '#0f172a';
+  const gridColor = theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e5e7eb';
   const rangeLabel = dateRange && dateRange[0] && dateRange[1]
     ? `${dayjs(dateRange[0]).format('MMM D, YYYY')} — ${dayjs(dateRange[1]).format('MMM D, YYYY')}`
     : data && data.length > 0
@@ -38,12 +42,12 @@ export default function ExternalCharts({ data, dateRange }: Props) {
 
       <div className="flex gap-4 items-stretch">
         <div className="flex-1">
-          <div className="p-4 bg-white rounded-lg shadow-sm" style={{ height: 220 }}>
+          <div className="p-4 chart-surface" style={{ height: 220 }}>
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                <YAxis />
+                <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+                <XAxis dataKey="date" tick={{ fontSize: 12, fill: axisColor }} />
+                <YAxis tick={{ fill: axisColor }} />
                 <Tooltip />
                 <Line type="monotone" dataKey="daily_total" stroke="#1890ff" strokeWidth={2} dot={{ r: 2 }} />
               </LineChart>
@@ -52,14 +56,14 @@ export default function ExternalCharts({ data, dateRange }: Props) {
         </div>
 
         <div style={{ width: 420 }}>
-          <div className="p-4 bg-white rounded-lg shadow-sm" style={{ height: 220 }}>
+          <div className="p-4 chart-surface" style={{ height: 220 }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                <YAxis />
+                <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+                <XAxis dataKey="date" tick={{ fontSize: 12, fill: axisColor }} />
+                <YAxis tick={{ fill: axisColor }} />
                 <Tooltip />
-                <Legend />
+                <Legend wrapperStyle={{ color: axisColor }} />
                 <Bar dataKey="reddit_total" stackId="a" fill="#2563eb" />
                 <Bar dataKey="tavily_total" stackId="a" fill="#06b6d4" />
                 <Bar dataKey="gemini_total" stackId="a" fill="#10b981" />

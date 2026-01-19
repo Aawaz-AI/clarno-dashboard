@@ -28,7 +28,7 @@ export default function Dashboard() {
   const userIdList = userProfiles?.map(user => user.user_id).filter(Boolean) || [];
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50/30 to-purple-50/30">
+    <div className="dashboard-shell min-h-screen">
       <Header
         userIds={userIdList}
         selectedUser={selectedUser}
@@ -64,7 +64,15 @@ export default function Dashboard() {
 
               {/* User stage analytics */}
               {!userLoading && !userError && stageAnalytics && (
-                <UserAnalytics stages={stagesArray} userRows={userDataRows} userOverallRows={userOverallRows} chartData={userChartData} selectedUser={selectedUser} onSelectUser={setSelectedUser} />
+                <UserAnalytics
+                  stages={stagesArray}
+                  userRows={userDataRows}
+                  userOverallRows={userOverallRows}
+                  userProfiles={userProfiles}
+                  chartData={userChartData}
+                  selectedUser={selectedUser}
+                  onSelectUser={setSelectedUser}
+                />
               )}
 
               {!userLoading && !userError && userProfiles.length > 0 && (

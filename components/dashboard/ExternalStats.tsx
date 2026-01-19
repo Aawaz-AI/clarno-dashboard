@@ -12,22 +12,22 @@ export default function ExternalStats({ totals }: Props) {
   return (
     <Row gutter={16} className="mb-6 mt-4">
       <Col span={6}>
-        <div className="p-4! bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+        <div className="p-4! chart-surface hover:shadow-md transition-shadow duration-200">
           <Statistic title="Reddit Calls" value={totals.total_reddit_calls} />
         </div>
       </Col>
       <Col span={6}>
-        <div className="p-4! bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+        <div className="p-4! chart-surface hover:shadow-md transition-shadow duration-200">
           <Statistic title="Tavily Calls" value={totals.total_tavily_calls} />
         </div>
       </Col>
       <Col span={6}>
-        <div className="p-4! bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+        <div className="p-4! chart-surface hover:shadow-md transition-shadow duration-200">
           <Statistic title="Gemini Calls" value={totals.total_gemini_calls} />
         </div>
       </Col>
       <Col span={6}>
-        <div className="p-4! bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+        <div className="p-4! chart-surface hover:shadow-md transition-shadow duration-200">
           <Statistic title="Total Calls" value={totals.total_all_calls} />
         </div>
       </Col>

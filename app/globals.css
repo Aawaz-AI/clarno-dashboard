@@ -76,6 +76,187 @@ html {
   scroll-behavior: smooth;
 }
 
+:root {
+  --bg-body: linear-gradient(to bottom right, #f8fafc, #eef2ff 30%, #e0f2fe);
+  --bg-surface: rgba(255, 255, 255, 0.82);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --border-subtle: rgba(148, 163, 184, 0.28);
+  --card-shadow: 0 10px 32px rgba(15, 23, 42, 0.08);
+  --chart-grid: #e2e8f0;
+  --chart-text: #475569;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg-body: radial-gradient(circle at 20% 20%, rgba(88, 28, 135, 0.25), transparent 35%),
+    radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.2), transparent 40%),
+    linear-gradient(160deg, #0b1220 0%, #0f172a 45%, #0b1220 100%);
+  --bg-surface: rgba(17, 24, 39, 0.82);
+  --text-primary: #e2e8f0;
+  --text-secondary: #cbd5e1;
+  --border-subtle: rgba(255, 255, 255, 0.12);
+  --card-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
+  --chart-grid: rgba(255, 255, 255, 0.08);
+  --chart-text: #cbd5e1;
+}
+
+body {
+  background: var(--bg-body);
+  color: var(--text-primary);
+}
+
+.dashboard-shell {
+  background: var(--bg-body);
+}
+
+[data-theme="dark"] .dashboard-shell {
+  background: var(--bg-body);
+}
+
+.header-bar {
+  background: var(--bg-surface);
+  border-color: var(--border-subtle);
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.06);
+}
+
+[data-theme="dark"] .header-bar {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+.theme-toggle {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Surface + text overrides for dark mode */
+[data-theme="dark"] .bg-white\/80,
+[data-theme="dark"] .bg-white\/95,
+[data-theme="dark"] .bg-white,
+[data-theme="dark"] .ant-card,
+[data-theme="dark"] .ant-card-body {
+  background: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-subtle) !important;
+  box-shadow: var(--card-shadow) !important;
+}
+
+[data-theme="dark"] .bg-gray-50 { background-color: rgba(255, 255, 255, 0.04) !important; }
+[data-theme="dark"] .bg-blue-50 { background-color: rgba(59, 130, 246, 0.12) !important; }
+[data-theme="dark"] .border-blue-500 { border-color: #60a5fa !important; }
+[data-theme="dark"] .custom-table .ant-table-thead > tr > th {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: var(--text-primary) !important;
+  border-bottom-color: var(--border-subtle) !important;
+}
+
+[data-theme="dark"] .custom-table .ant-table-tbody > tr > td {
+  border-color: var(--border-subtle) !important;
+}
+
+[data-theme="dark"] .custom-table .ant-table-tbody > tr:hover > td {
+  background: rgba(59, 130, 246, 0.08) !important;
+}
+
+[data-theme="dark"] .custom-table .ant-pagination-item-active {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6) !important;
+  border-color: #60a5fa !important;
+}
+
+[data-theme="dark"] .custom-table .ant-pagination-item-active a {
+  color: white !important;
+}
+
+[data-theme="dark"] .ant-table-container {
+  background: var(--bg-surface) !important;
+}
+
+[data-theme="dark"] .ant-table-cell {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .ant-tag-default {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+[data-theme="dark"] .ant-typography-secondary {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .ant-select-selector,
+[data-theme="dark"] .ant-picker,
+[data-theme="dark"] .ant-input,
+[data-theme="dark"] .ant-input-affix-wrapper {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-subtle) !important;
+  box-shadow: none !important;
+}
+
+[data-theme="dark"] .ant-select-selection-item,
+[data-theme="dark"] .ant-select-selection-placeholder,
+[data-theme="dark"] .ant-picker-input > input,
+[data-theme="dark"] .ant-input-affix-wrapper input,
+[data-theme="dark"] .ant-input::placeholder {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .ant-picker-suffix,
+[data-theme="dark"] .ant-select-arrow {
+  color: var(--text-secondary) !important;
+}
+
+.chart-surface {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+}
+
+.stage-row {
+  background: var(--bg-surface);
+  transition: background 0.2s ease;
+}
+
+.stage-row-alt {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="dark"] .stage-row-alt {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+[data-theme="dark"] .border-gray-200\/50,
+[data-theme="dark"] .border-gray-100 {
+  border-color: var(--border-subtle) !important;
+}
+
+[data-theme="dark"] .text-gray-400 { color: #94a3b8 !important; }
+[data-theme="dark"] .text-gray-500 { color: #a6b2c4 !important; }
+[data-theme="dark"] .text-gray-600 { color: var(--text-secondary) !important; }
+[data-theme="dark"] .text-gray-900 { color: var(--text-primary) !important; }
+[data-theme="dark"] .bg-gray-100 { background-color: rgba(255, 255, 255, 0.06) !important; }
+
+/* Recharts tweaks for dark mode */
+[data-theme="dark"] .recharts-cartesian-grid line { stroke: var(--chart-grid); }
+[data-theme="dark"] .recharts-cartesian-axis-tick-value { fill: var(--chart-text); }
+
+/* Scrollbar dark variant */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #1d4ed8, #7c3aed);
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;

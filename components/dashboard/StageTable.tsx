@@ -35,7 +35,8 @@ export default function StageTable({ stages }: Props) {
         pagination={false}
         bordered
         size="middle"
-        rowClassName={(record, index) => index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
+        className="stage-table custom-table"
+        rowClassName={(_, index) => (index % 2 === 0 ? 'stage-row' : 'stage-row stage-row-alt')}
       />
     </Card>
   );

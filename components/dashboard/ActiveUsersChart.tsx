@@ -1,6 +1,7 @@
 import { Card } from 'antd';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area } from 'recharts';
 import { ChartData } from '@/types';
+import { useThemeMode } from '@/app/provider';
 
 function formatDateISO(d: Date) {
   return d.toISOString().slice(0, 10);
@@ -28,6 +29,10 @@ function CustomTooltip({ active, payload, label }: any) {
 }
 
 export default function ActiveUsersChart({ data }: ActiveUsersChartProps) {
+  const { theme } = useThemeMode();
+  const axisColor = theme === 'dark' ? '#cbd5e1' : '#475569';
+  const gridColor = theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e6edf3';
+
   // If there's no data, create a small fallback of the last 7 days with zeros
   const displayData: ChartData[] = (data && data.length > 0)
     ? data
@@ -55,9 +60,9 @@ export default function ActiveUsersChart({ data }: ActiveUsersChartProps) {
             </linearGradient>
           </defs>
 
-          <CartesianGrid strokeDasharray="3 3" stroke="#e6edf3" />
-          <XAxis dataKey="date" tick={{ fontSize: 12, fill: '#475569' }} tickMargin={8} />
-          <YAxis tick={{ fontSize: 12, fill: '#475569' }} domain={[0, yMax]} />
+          <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+          <XAxis dataKey="date" tick={{ fontSize: 12, fill: axisColor }} tickMargin={8} />
+          <YAxis tick={{ fontSize: 12, fill: axisColor }} domain={[0, yMax]} />
           <Tooltip content={<CustomTooltip />} />
 
           <Area type="monotone" dataKey="activeUsers" stroke="#1890ff" fillOpacity={1} fill="url(#gradActive)" />

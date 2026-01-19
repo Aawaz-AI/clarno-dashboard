@@ -3,6 +3,7 @@
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, PieChart, Pie, Cell, Legend } from 'recharts';
 import { Card } from 'antd';
 import type { StageDetail } from '@/types';
+import { useThemeMode } from '@/app/provider';
 
 type Props = {
   chartData: Array<{ name: string; totalTurns: number }>;
@@ -10,24 +11,27 @@ type Props = {
 };
 
 export default function StageTotals({ chartData, stages }: Props) {
+  const { theme } = useThemeMode();
+  const axisColor = theme === 'dark' ? '#cbd5e1' : '#0f172a';
+  const gridColor = theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e5e7eb';
   const COLORS = ['#2563eb', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#f43f5e'];
 
   return (
     <Card className="shadow-sm" title={<span className="text-lg font-semibold">Stage Totals</span>}>
       <div className="flex gap-6 items-start">
-        <div style={{ flex: 1, height: 260 }}>
+        <div style={{ flex: 1, height: 260 }} className="chart-surface p-4">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} margin={{ top: 10, right: 20, left: 0, bottom: 60 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" tick={{ fontSize: 12 }} angle={-20} textAnchor="end" interval={0} tickMargin={12} height={60} />
-              <YAxis />
+              <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+              <XAxis dataKey="name" tick={{ fontSize: 12, fill: axisColor }} angle={-20} textAnchor="end" interval={0} tickMargin={12} height={60} />
+              <YAxis tick={{ fill: axisColor }} />
               <Tooltip />
               <Bar dataKey="totalTurns" fill="#1890ff" />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
-        <div style={{ width: 360, height: 260 }}>
+        <div style={{ width: 360, height: 260 }} className="chart-surface p-4">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -75,7 +79,7 @@ export default function StageTotals({ chartData, stages }: Props) {
                 ))}
               </Pie>
               <Tooltip formatter={(v: any, name: any) => [`${v}`, `${name}`]} />
-              <Legend layout="vertical" verticalAlign="middle" align="right" wrapperStyle={{ fontSize: 12, width: 140 }} />
+              <Legend layout="vertical" verticalAlign="middle" align="right" wrapperStyle={{ fontSize: 12, width: 140, color: axisColor }} />
             </PieChart>
           </ResponsiveContainer>
         </div>

@@ -95,7 +95,7 @@ export default function PerUserDetails({ userRows, userOverallRows = [], selecte
           sorter: (a, b) => (a.overall_charged_credits ?? 0) - (b.overall_charged_credits ?? 0),
         },
         {
-          title: 'Input Tokens',
+          title: 'Input Tokens (10K)',
           dataIndex: 'overall_total_input_tokens',
           key: 'overall_total_input_tokens',
           width: 110,

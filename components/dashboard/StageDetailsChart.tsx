@@ -3,6 +3,7 @@
 import React from 'react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import type { StageDetail } from '@/types';
+import { useThemeMode } from '@/app/provider';
 
 interface Props {
   stages: Array<{ stage: string } & StageDetail>;
@@ -19,6 +20,10 @@ function formatStageName(s: string) {
 }
 
 export default function StageDetailsChart({ stages }: Props) {
+  const { theme } = useThemeMode();
+  const axisColor = theme === 'dark' ? '#cbd5e1' : '#0f172a';
+  const gridColor = theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e5e7eb';
+
   const data = stages.map((s) => ({
     name: formatStageName(s.stage),
     total_turns: s.total_turns ?? 0,
@@ -41,11 +46,11 @@ export default function StageDetailsChart({ stages }: Props) {
     <div style={{ width: '100%', height: 320 }}>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 10, right: 20, left: 20, bottom: 40 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" angle={-20} textAnchor="end" height={60} />
-          <YAxis />
+          <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+          <XAxis dataKey="name" angle={-20} textAnchor="end" height={60} tick={{ fill: axisColor }} />
+          <YAxis tick={{ fill: axisColor }} />
           <Tooltip />
-          <Legend verticalAlign="top" height={36} />
+          <Legend verticalAlign="top" height={36} wrapperStyle={{ color: axisColor }} />
           {metrics.map((m, i) => (
             <Line
               key={m.key}
