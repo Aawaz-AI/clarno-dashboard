@@ -44,7 +44,7 @@ export interface AnalyticsResponse {
 
 export async function fetchOverallAnalytics(params: AnalyticsParams): Promise<AnalyticsResponse> {
   // Use Next.js API route instead of direct backend call
-  const url = new URL('/api/analytics', window.location.origin);
+  const url = new URL('/api/analytics/overall_analytics', window.location.origin);
   url.searchParams.append('start_date', params.start_date);
   url.searchParams.append('end_date', params.end_date);
 
