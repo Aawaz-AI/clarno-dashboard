@@ -87,9 +87,7 @@ export default function UsersTable({ users, selectedUser, onSelectUser }: UsersT
     <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 border-0 bg-white/80 backdrop-blur-sm overflow-hidden">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-1 h-8 bg-linear-to-b from-blue-500 to-purple-600 rounded-full" />
-        <h2 className="text-xl font-bold bg-linear-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-          User Information
-        </h2>
+        <h2 className="text-xl font-bold heading-fade">User Information</h2>
       </div>
       <Table
         columns={columns}

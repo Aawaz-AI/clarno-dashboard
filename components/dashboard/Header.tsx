@@ -37,7 +37,7 @@ export default function Header({ userIds, selectedUser, onUserChange, onDateChan
             <span className="text-white font-bold text-2xl">D</span>
           </div>
           <div>
-            <h1 className="text-2xl font-bold bg-linear-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">Dashboard</h1>
+            <h1 className="text-2xl font-bold heading-fade">Dashboard</h1>
             <p className="text-xs text-gray-500">Analytics & Insights</p>
           </div>
         </div>

@@ -49,7 +49,7 @@ export default function ActiveUsersChart({ data }: ActiveUsersChartProps) {
     <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 border-0 bg-white/80 backdrop-blur-sm overflow-hidden">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-1 h-8 bg-linear-to-b from-blue-500 to-purple-600 rounded-full" />
-        <h2 className="text-xl font-bold bg-linear-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">Active Users Trend</h2>
+        <h2 className="text-xl font-bold heading-fade">Active Users Trend</h2>
       </div>
       <ResponsiveContainer width="100%" height={340}>
         <LineChart data={displayData} margin={{ top: 10, right: 20, left: 0, bottom: 20 }}>

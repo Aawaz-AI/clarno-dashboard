@@ -233,6 +233,18 @@ body {
   background: rgba(255, 255, 255, 0.03);
 }
 
+.heading-fade {
+  background: linear-gradient(to right, #111827, #334155);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+[data-theme="dark"] .heading-fade {
+  background: none;
+  color: var(--text-primary);
+}
+
 [data-theme="dark"] .border-gray-200\/50,
 [data-theme="dark"] .border-gray-100 {
   border-color: var(--border-subtle) !important;
