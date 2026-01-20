@@ -60,6 +60,12 @@ export function useAnalytics(dateRange: [string, string] | null) {
     activeUsers: Math.round(data?.data?.active_users?.analytics?.total_active_users_in_period ?? 0),
     nonActiveUsers: data?.data?.active_users?.analytics?.non_active_users ?? 0,
     averageDailyActive: data?.data?.active_users?.analytics?.average_daily_active_users ?? 0,
+    avgTimePerUser: 0, // Placeholder - calculate from stage data
+    maxStageReached: 'Pain Statement', // Placeholder - derive from stage_analytics
+    usersCompletedAllStages: 0, // Placeholder
+    completionRate: 0, // Placeholder
+    freeToProConversion: 0, // Placeholder
+    paidConversion: 0, // Placeholder
   };
 
   const userRows = data?.data?.stage_analytics?.user_data 

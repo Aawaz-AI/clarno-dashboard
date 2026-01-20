@@ -128,11 +128,13 @@ export interface Stats {
   totalUsers: number;
   activeUsers: number;
   nonActiveUsers: number;
-  // peakDay: {
-  //   date: string;
-  //   count: number;
-  // };
   averageDailyActive: number;
+  avgTimePerUser?: number;
+  maxStageReached?: string;
+  usersCompletedAllStages?: number;
+  completionRate?: number;
+  freeToProConversion?: number;
+  paidConversion?: number;
 }
 
 // User stage analytics types
